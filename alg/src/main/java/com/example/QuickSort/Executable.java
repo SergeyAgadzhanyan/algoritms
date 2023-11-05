@@ -5,46 +5,44 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class Partition {
+public class Executable {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-//        int length = Integer.parseInt(reader.readLine());
-//        int[] arr = Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-//        int number = Integer.parseInt(reader.readLine());
-        sort(new int[]{3,1,5,2}, 4);
+        int length = Integer.parseInt(reader.readLine());
+        String arrStr = reader.readLine();
+        int[] arr = arrStr.isBlank() ? new int[0] :
+                Arrays.stream(arrStr.split(" ")).mapToInt(Integer::parseInt).toArray();
+        int number = Integer.parseInt(reader.readLine());
+
+        sort(arr, number, 0, arr.length);
     }
 
-    public static void sort(int[] arr, int numb) {
-        int length = arr.length;
-        if (length == 0) {
+    public static void sort(int[] arr, int numb, int i, int j) {
+
+        if (j == 0) {
             System.out.println("0\n0");
             return;
         }
-        if (length == 1) {
-            System.out.println("0\n1");
-            return;
-        }
         int sum = 0;
-        int i = 0;
-        int j = length - 1;
         while (i < j) {
-            while (arr[i] < numb && i < j) {
+            while (i < j && arr[i] < numb) {
                 i++;
                 sum++;
             }
 
-            while (arr[j] > numb && i < j) j--;
+            while (i < j && arr[j-1] > numb) j--;
             if (i < j) {
-                swap(arr, i, j);
+                swap(arr, i, j-1);
+                if (arr[i] < numb || arr[j-1] < numb) sum++;
                 i++;
                 j--;
-                sum++;
             }
 
         }
         System.out.println(sum);
-        System.out.println(length - sum);
+        System.out.println(arr.length - sum);
     }
+
 
     private static void swap(int[] arr, int indexOne, int indexTwo) {
         int temp = arr[indexOne];

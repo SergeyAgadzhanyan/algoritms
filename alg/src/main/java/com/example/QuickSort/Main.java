@@ -1,37 +1,44 @@
 package com.example.QuickSort;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 public class Main {
-    public static void main(String[] args) {
-        int[] x = { 8, 0, 4, 7, 3, 7, 10, 12, -3 };
-        System.out.println("Было");
-        System.out.println(Arrays.toString(x));
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        int length = Integer.parseInt(reader.readLine());
+        String arrStr = reader.readLine();
+        int[] arr = arrStr.isBlank() ? new int[0] :
+                Arrays.stream(arrStr.split(" ")).mapToInt(Integer::parseInt).toArray();
+        int number = Integer.parseInt(reader.readLine());
 
-        int low = 0;
-        int high = x.length - 1;
+        sort(arr, number, 0, arr.length -1);
+        int sum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] < number) sum++;
+        }
+        int sum2 = arr.length - sum;
+        System.out.print(sum + "\n" + sum2);
 
-        sort(x, low, high);
-        System.out.println("Стало");
-        System.out.println(Arrays.toString(x));
     }
 
-    public static void sort(int[] arr, int from, int to) {
+    public static void sort(int[] arr, int number, int from, int to) {
         if (arr.length == 0) {
             return;
         }
         if (from >= to) {
             return;
         }
-        int middle = from + (to - from) / 2;
-        int elem = arr[middle];
+
         int i = from;
         int j = to;
         while (i <= j) {
-            while (arr[i] < elem) {
+            while (arr[i] < number) {
                 i++;
             }
-            while (arr[j] > elem) {
+            while (arr[j] > number) {
                 j--;
             }
             if (i <= j) {
@@ -41,12 +48,16 @@ public class Main {
             }
         }
 
-        if(from < j){
-            sort(arr,from, j);
+        if (from < j) {
+            sort(arr, getElem(arr, from, j), from, j);
         }
-        if(to > i){
-            sort(arr,i, to);
+        if (to > i) {
+            sort(arr, getElem(arr, i, to), i, to);
         }
+    }
+    private static int getElem(int[] arr, int from, int to){
+        int middle = from + (to - from) / 2;
+        return arr[middle];
     }
 
     private static void swap(int[] arr, int indexOne, int indexTwo) {
