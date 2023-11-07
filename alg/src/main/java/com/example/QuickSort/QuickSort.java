@@ -20,9 +20,9 @@ public class QuickSort {
         int length = Integer.parseInt(textArr[0]);
         if (length == 0) return;
         int[] arr = Arrays.stream(textArr[1].split(" ")).mapToInt(Integer::parseInt).toArray();
-        sort(arr, arr[0], 0, length - 1);
-        for (int i = 0; i < arr.length; i++) {
-            result.append(arr[i]).append(" ");
+        sort(arr, arr[getRandomNumber(0,length-1)], 0, length - 1);
+        for (int j : arr) {
+            result.append(j).append(" ");
         }
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("output.txt"))) {
@@ -57,11 +57,10 @@ public class QuickSort {
         }
 
         if (from < j) {
-
-            sort(arr, arr[from], from, j);
+            sort(arr, arr[getRandomNumber(from,j)], from, j);
         }
         if (to > i) {
-            sort(arr, arr[i], i, to);
+            sort(arr, arr[getRandomNumber(i,to)], i, to);
         }
     }
 
@@ -75,5 +74,8 @@ public class QuickSort {
         int temp = arr[indexOne];
         arr[indexOne] = arr[indexTwo];
         arr[indexTwo] = temp;
+    }
+    public static int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
     }
 }
